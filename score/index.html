@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Infrastructure Readiness Score | Infralytix</title>
+<meta name="description" content="Take the free Infralytix Infrastructure Readiness Score and see how prepared your business is.">
+<style>
+:root{
+  --navy:#06152f;--navy2:#0a2147;--blue:#0f8df7;--cyan:#22b8f4;
+  --text:#0a1630;--muted:#64748b;--line:#e2e8f0;--bg:#f7fbff;--white:#fff;
+  --green:#1f9d63;--amber:#d97706;--red:#c2413b;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;color:var(--text);background:linear-gradient(#f8fbff,#fff)}
+a{text-decoration:none;color:inherit}
+.wrap{width:min(1120px,calc(100% - 32px));margin:auto}
+header{background:#020817;color:#fff;position:sticky;top:0;z-index:10}
+nav{height:72px;display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:12px;font-weight:800}
+.brand img{width:46px;height:46px;object-fit:contain;background:#fff;border-radius:10px;padding:3px}
+.brand b{color:var(--cyan)}
+.hero{padding:64px 0;background:radial-gradient(circle at 85% 20%,rgba(34,184,244,.2),transparent 28%),linear-gradient(135deg,#020817,var(--navy2));color:#fff}
+.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center}
+.eyebrow{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan);font-weight:800;margin:0 0 12px}
+h1{font-size:clamp(2.8rem,6vw,5.4rem);line-height:.98;letter-spacing:-.05em;margin:0 0 18px}
+.hero p{color:rgba(255,255,255,.78);font-size:1.08rem}
+.preview{background:#fff;color:var(--text);padding:28px;border-radius:24px;box-shadow:0 28px 70px rgba(0,0,0,.3)}
+.preview-score{font-size:3rem;font-weight:900;color:var(--blue)}
+main{padding:50px 0 80px}
+.quiz-grid{display:grid;grid-template-columns:250px 1fr;gap:28px;align-items:start}
+.progress-card{position:sticky;top:94px;background:#fff;border:1px solid var(--line);padding:20px;border-radius:18px}
+.progress-track{height:10px;border-radius:999px;background:#eef2f7;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--cyan));transition:.2s}
+.progress-meta{display:flex;justify-content:space-between;font-size:.82rem;color:var(--muted);margin-top:8px}
+.question{background:#fff;border:1px solid var(--line);border-radius:18px;padding:26px;margin-bottom:16px;box-shadow:0 10px 25px rgba(15,23,42,.04)}
+.question.answered{border-color:rgba(15,141,247,.35)}
+.qmeta{color:var(--blue);font-size:.76rem;text-transform:uppercase;letter-spacing:.08em;font-weight:800}
+.question h3{margin:8px 0 16px;font-size:1.18rem}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opt{position:relative}
+.opt input{position:absolute;opacity:0}
+.opt span{display:flex;min-height:52px;align-items:center;padding:12px 14px;border:1px solid var(--line);border-radius:11px;background:var(--bg);font-weight:700;cursor:pointer}
+.opt input:checked+span{border-color:var(--blue);background:#e8f5ff;color:var(--navy)}
+.btn{display:inline-flex;min-height:50px;align-items:center;justify-content:center;border:0;border-radius:10px;padding:0 22px;font-weight:800;cursor:pointer}
+.primary{background:linear-gradient(135deg,var(--blue),var(--cyan));color:#fff}
+.submit{display:flex;justify-content:flex-end;margin-top:20px}
+.results{display:none;margin-top:24px}.results.show{display:block}
+.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:30px;box-shadow:0 16px 40px rgba(15,23,42,.06)}
+.result-top{display:grid;grid-template-columns:150px 1fr;gap:24px;align-items:center}
+.ring{--pct:0%;width:145px;height:145px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--blue) var(--pct),#e8eef6 0);position:relative}
+.ring:after{content:"";position:absolute;width:105px;height:105px;background:#fff;border-radius:50%}
+.ring strong{position:relative;z-index:1;font-size:2rem}
+.badge{display:inline-block;padding:6px 10px;border-radius:999px;font-size:.8rem;font-weight:800;margin-bottom:8px}
+.cats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:24px}
+.cat{border:1px solid var(--line);background:var(--bg);padding:14px;border-radius:12px}
+.cat strong{display:block;font-size:1.1rem}
+.cat span{font-size:.8rem;color:var(--muted)}
+.insights{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:22px}
+.insight{border:1px solid var(--line);padding:18px;border-radius:14px}
+.insight ul{padding-left:20px;color:var(--muted)}
+.cta{margin-top:18px;background:linear-gradient(135deg,#020817,var(--navy2));color:#fff}
+.cta-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.cta p{color:rgba(255,255,255,.72)}
+form{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+form input{min-height:46px;padding:0 12px;border-radius:9px;border:1px solid var(--line)}
+.full{grid-column:1/-1}.note{grid-column:1/-1;font-size:.76rem;color:rgba(255,255,255,.6)}
+.success{display:none;padding:12px;border:1px solid rgba(31,157,99,.35);background:rgba(31,157,99,.15);border-radius:10px}
+.success.show{display:block}
+footer{text-align:center;color:var(--muted);padding:30px}
+@media(max-width:850px){.hero-grid,.quiz-grid,.cta-grid{grid-template-columns:1fr}.progress-card{position:static}.cats{grid-template-columns:1fr 1fr}}
+@media(max-width:620px){.options,.insights,form{grid-template-columns:1fr}.full{grid-column:auto}.result-top{grid-template-columns:1fr;text-align:center;justify-items:center}.cats{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <nav>
+      <a class="brand" href="/"><img src="assets/infralytix-logo.png" alt="Infralytix logo"><span>Infra<b>lytix</b></span></a>
+      <a href="/">Back to infralytix.io</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow">Free Infrastructure Health Check</p>
+      <h1>How ready is your business?</h1>
+      <p>Answer 10 straightforward questions and get an instant Infrastructure Readiness Score across resilience, security, operations, documentation, and modernization.</p>
+    </div>
+    <div class="preview">
+      <p class="eyebrow">Example</p>
+      <div class="preview-score">68 / 100</div>
+      <h2>Infrastructure Readiness Index</h2>
+      <p>See where you are strong, where uncertainty exists, and what areas deserve a closer look.</p>
+    </div>
+  </div>
+</section>
+
+<main>
+<div class="wrap">
+  <div class="quiz-grid">
+    <aside class="progress-card">
+      <h3>Your Progress</h3>
+      <div class="progress-track"><div id="progressFill" class="progress-fill"></div></div>
+      <div class="progress-meta"><span id="answered">0 answered</span><span>10 total</span></div>
+      <p style="color:var(--muted);font-size:.84rem;margin-top:20px">Domains: Resilience, Security, Operations, Documentation, Modernization</p>
+    </aside>
+    <section id="quiz"></section>
+  </div>
+
+  <section id="results" class="results">
+    <div class="card">
+      <div class="result-top">
+        <div id="ring" class="ring"><strong id="score">0</strong></div>
+        <div>
+          <span id="badge" class="badge">Readiness Level</span>
+          <h2 style="margin:0 0 8px">Your Infrastructure Readiness Score</h2>
+          <p id="summary" style="color:var(--muted);margin:0"></p>
+        </div>
+      </div>
+      <div id="cats" class="cats"></div>
+      <div class="insights">
+        <div class="insight"><h3>What looks good</h3><ul id="strengths"></ul></div>
+        <div class="insight"><h3>Areas to review</h3><ul id="reviews"></ul></div>
+      </div>
+    </div>
+
+    <div class="card cta">
+      <div class="cta-grid">
+        <div>
+          <p class="eyebrow">Understand Your Score</p>
+          <h2>Want a free 15-minute Infrastructure Health Check?</h2>
+          <p>Send your results to Infralytix and we can use them as the starting point for a short, practical conversation. No obligation.</p>
+        </div>
+        <div>
+          <form id="leadForm">
+            <input name="name" placeholder="Your name" required>
+            <input name="company" placeholder="Company">
+            <input class="full" type="email" name="email" placeholder="Business email" required>
+            <input type="hidden" name="_subject" value="New Infrastructure Readiness Score Lead">
+            <input type="hidden" name="source" value="infralytix.io/score">
+            <input type="hidden" name="readiness_score" id="leadScore">
+            <input type="hidden" name="readiness_level" id="leadLevel">
+            <input type="hidden" name="category_scores" id="leadCats">
+            <input type="hidden" name="quiz_answers" id="leadAnswers">
+            <button class="btn primary full" type="submit">Send My Results to Infralytix</button>
+            <div class="note">Your information is only used to respond to this request.</div>
+          </form>
+          <div id="success" class="success">Thanks — your results were sent successfully.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+</main>
+
+<footer>© <span id="year"></span> Infralytix LLC</footer>
+
+<script>
+const endpoint="https://formspree.io/f/mppazzkg";
+const questions=[
+["Resilience","Have your business backups been successfully restored or tested within the last 90 days?",[["Yes",10],["More than 90 days ago",6],["No",2],["Not sure",0]]],
+["Resilience","If a critical server or cloud service failed tomorrow, do you know how long recovery would take?",[["Under 4 hours",10],["Within a day",7],["Multiple days",3],["Not sure",0]]],
+["Security","Is multi-factor authentication enabled for administrative and business-critical accounts?",[["Yes — consistently",10],["For most accounts",7],["Only a few accounts",3],["No / Not sure",0]]],
+["Security","Has your firewall, remote access, or network security configuration been reviewed in the last 12 months?",[["Yes",10],["Some portions",6],["No",2],["Not sure",0]]],
+["Operations","Are critical systems actively monitored for outages, capacity problems, or security events?",[["Yes — with alerts",10],["Some systems",6],["Mostly manual checks",3],["No / Not sure",0]]],
+["Operations","Are operating systems, applications, and infrastructure devices updated on a regular schedule?",[["Yes — documented schedule",10],["Usually",7],["Only when needed",3],["No / Not sure",0]]],
+["Documentation","Could someone other than your primary IT person find current network, system, and support documentation?",[["Yes — current",10],["Some documentation",6],["Very limited",2],["No / Not sure",0]]],
+["Documentation","Are disaster recovery procedures and key technology dependencies documented?",[["Yes — reviewed regularly",10],["Partially",6],["Outdated",3],["No / Not sure",0]]],
+["Modernization","Do you track the age, warranty, support status, or lifecycle of critical technology?",[["Yes — centrally",10],["Most critical systems",7],["Informally",3],["No / Not sure",0]]],
+["Modernization","Do you have a clear technology plan for the next 12–24 months?",[["Yes — documented/budgeted",10],["General priorities",7],["Mostly reactive",3],["No / Not sure",0]]]
+];
+const advice={
+Resilience:["Backup and recovery practices appear to provide a useful continuity foundation.","Validate restore testing, recovery time expectations, and disaster recovery readiness."],
+Security:["Core security controls appear to be receiving regular attention.","Review MFA coverage, privileged access, firewall rules, and security configuration."],
+Operations:["Monitoring and maintenance practices appear reasonably structured.","Improve monitoring coverage, alerting, patching cadence, and operational ownership."],
+Documentation:["Documentation appears capable of reducing dependence on individual knowledge.","Update network, recovery, system, and support documentation so knowledge is transferable."],
+Modernization:["Technology lifecycle and forward planning appear reasonably understood.","Create a documented lifecycle and modernization plan tied to business priorities."]
+};
+const quiz=document.getElementById("quiz");
+questions.forEach((q,i)=>{
+ const el=document.createElement("article"); el.className="question"; el.dataset.q=i;
+ el.innerHTML=`<div class="qmeta">Question ${i+1} · ${q[0]}</div><h3>${q[1]}</h3><div class="options">${q[2].map((o,j)=>`<label class="opt"><input type="radio" name="q${i}" value="${o[1]}" data-label="${o[0]}"><span>${o[0]}</span></label>`).join("")}</div>`;
+ quiz.appendChild(el);
+});
+quiz.insertAdjacentHTML("beforeend",`<div class="submit"><button id="calc" class="btn primary">See My Readiness Score</button></div>`);
+document.querySelectorAll('input[type="radio"]').forEach(r=>r.addEventListener("change",()=>{
+ let count=0; questions.forEach((q,i)=>{const c=document.querySelector(`input[name=q${i}]:checked`);document.querySelector(`[data-q="${i}"]`).classList.toggle("answered",!!c);if(c)count++});
+ document.getElementById("answered").textContent=`${count} answered`; document.getElementById("progressFill").style.width=`${count*10}%`;
+}));
+function level(score){
+ if(score>=85)return["Strong Readiness","#1f9d63","#e9f8f0","Your answers suggest a strong infrastructure foundation. Focus on validating assumptions and continuously improving."];
+ if(score>=70)return["Good Foundation","#0f8df7","#e8f5ff","Your environment appears to have a solid foundation, with opportunities to improve resilience, visibility, or planning."];
+ if(score>=50)return["Needs Attention","#d97706","#fff4df","Your answers indicate meaningful gaps or uncertainty. A focused review could reduce operational risk and identify practical next steps."];
+ return["Elevated Risk","#c2413b","#fff0ef","Several important infrastructure controls appear missing, inconsistent, or unknown. Prioritize resilience, security, and documentation."];
+}
+document.getElementById("calc").onclick=()=>{
+ let total=0,answers={},domains={};
+ for(let i=0;i<questions.length;i++){
+   const c=document.querySelector(`input[name=q${i}]:checked`);
+   if(!c){document.querySelector(`[data-q="${i}"]`).scrollIntoView({behavior:"smooth",block:"center"});return;}
+   const d=questions[i][0],score=Number(c.value); total+=score;
+   domains[d]=domains[d]||[0,0]; domains[d][0]+=score;domains[d][1]+=10;
+   answers[`q${i+1}`]={domain:d,question:questions[i][1],answer:c.dataset.label,score};
+ }
+ const percentages={}; Object.entries(domains).forEach(([d,v])=>percentages[d]=Math.round(v[0]/v[1]*100));
+ const l=level(total);
+ document.getElementById("score").textContent=total; document.getElementById("ring").style.setProperty("--pct",`${total}%`);
+ const b=document.getElementById("badge");b.textContent=l[0];b.style.color=l[1];b.style.background=l[2];document.getElementById("summary").textContent=l[3];
+ document.getElementById("cats").innerHTML=Object.entries(percentages).map(([d,v])=>`<div class="cat"><strong>${v}%</strong><span>${d}</span></div>`).join("");
+ let s=Object.entries(percentages).filter(x=>x[1]>=70).sort((a,b)=>b[1]-a[1]).slice(0,3).map(x=>advice[x[0]][0]);
+ let r=Object.entries(percentages).filter(x=>x[1]<70).sort((a,b)=>a[1]-b[1]).slice(0,3).map(x=>advice[x[0]][1]);
+ if(!s.length)s=["Completing the scorecard establishes a useful baseline for improvement."];
+ if(!r.length)r=["Continue validating recovery, lifecycle, security, and documentation practices regularly."];
+ document.getElementById("strengths").innerHTML=s.map(x=>`<li>${x}</li>`).join("");document.getElementById("reviews").innerHTML=r.map(x=>`<li>${x}</li>`).join("");
+ document.getElementById("leadScore").value=total;document.getElementById("leadLevel").value=l[0];document.getElementById("leadCats").value=JSON.stringify(percentages);document.getElementById("leadAnswers").value=JSON.stringify(answers);
+ document.getElementById("results").classList.add("show");document.getElementById("results").scrollIntoView({behavior:"smooth"});
+};
+document.getElementById("leadForm").onsubmit=async e=>{
+ e.preventDefault();const f=e.currentTarget,b=f.querySelector("button");b.disabled=true;b.textContent="Sending...";
+ try{const res=await fetch(endpoint,{method:"POST",body:new FormData(f),headers:{Accept:"application/json"}});if(!res.ok)throw 0;f.style.display="none";document.getElementById("success").classList.add("show");}
+ catch{b.disabled=false;b.textContent="Send My Results to Infralytix";alert("Could not send right now. Please email chris@infralytix.io.");}
+};
+document.getElementById("year").textContent=new Date().getFullYear();
+</script>
+</body>
+</html>
